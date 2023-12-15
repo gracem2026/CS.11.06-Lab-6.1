@@ -5,12 +5,14 @@ public class AdventureTime {
 
     /** This is the main method and it is where you will test your implementations for challengeOne, challengeTwo, etc.
      *
-     * @param args
-     * @throws IOException
+      @param args
+      @throws IOException
      */
     public static void main(String[] args) throws IOException {
-
-
+        challengeOne("inputOneTwo.txt");
+        challengeTwo("inputOneTwo.txt");
+        challengeThree("inputThreeFour.txt");
+        challengeFour("inputThreeFour.txt");
     }
 
     /** TODO 1
@@ -22,7 +24,16 @@ public class AdventureTime {
      * @throws IOException
      */
     public static int challengeOne(String fileName) throws IOException {
-        return 0;
+        int numberOfLines = countLinesInFile(fileName);
+        int[] fileData = readFile(fileName);
+        int count = 0;
+
+        for (int i = 1; i < numberOfLines-1; i++) {
+            if (fileData[i] < fileData[i+1]) count ++;
+        }
+
+        System.out.println(count);
+        return count;
     }
 
     /** TODO 2
@@ -34,7 +45,21 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeTwo(String fileName) throws FileNotFoundException {
-        return 0;
+        int numberOfLines = countLinesInFile(fileName);
+        int[] fileData = readFile(fileName);
+        int[] newSums = new int[numberOfLines - 2];
+
+        for (int i = 0; i < newSums.length; i++) {
+            newSums[i] = fileData[i] + fileData[i+1] + fileData[i+2];
+        }
+
+        int count = 0;
+        for (int j = 1; j < newSums.length-1; j++) {
+            if (newSums[j] < newSums[j + 1]) count++;
+        }
+
+        System.out.println(count);
+        return count;
     }
 
     /** TODO 3
@@ -46,7 +71,40 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeThree(String fileName) throws FileNotFoundException {
-        return 0;
+        int numberOfLines = countLinesInFile(fileName);
+        File file = new File(fileName);
+        Scanner scanner = new Scanner(file);
+        String[] fileData = new String[numberOfLines];
+        int index = 0;
+        while (scanner.hasNextLine()) {
+            fileData[index++] = scanner.nextLine();
+        }
+        scanner.close();
+
+        int depth = 0;
+        int horizontal = 0;
+
+        for(int i = 0; i < numberOfLines; i++) {
+            int tempLen = fileData[i].length();
+            int tempNo = Integer.parseInt(fileData[i].substring(tempLen-1));
+            String tempSubStr = fileData[i].substring(0, tempLen-2);
+
+            // for testing purposes
+            //System.out.println(tempLen);
+            //System.out.println(tempNo);
+            //System.out.println(tempSubStr);
+
+            if (tempSubStr.equals("forward")) horizontal += tempNo;
+            else if (tempSubStr.equals("down")) depth += tempNo;
+            else if (tempSubStr.equals("up")) depth -= tempNo;
+
+            // for testing purposes
+            //System.out.println(horizontal);
+            //System.out.println(depth);
+        }
+
+        System.out.println(depth * horizontal);
+        return depth * horizontal;
     }
 
     /** TODO 4
@@ -58,7 +116,49 @@ public class AdventureTime {
      * @throws FileNotFoundException
      */
     public static int challengeFour(String filename) throws FileNotFoundException {
-        return 0;
+        int numberOfLines = countLinesInFile(filename);
+        File file = new File(filename);
+        Scanner scanner = new Scanner(file);
+        String[] fileData = new String[numberOfLines];
+        int index = 0;
+        while (scanner.hasNextLine()) {
+            fileData[index++] = scanner.nextLine();
+        }
+        scanner.close();
+
+        int depth = 0;
+        int horizontal = 0;
+        int aim = 0;
+
+        for(int i = 0; i < numberOfLines; i++) {
+            int tempLen = fileData[i].length();
+            int tempNo = Integer.parseInt(fileData[i].substring(tempLen-1));
+            String tempSubStr = fileData[i].substring(0, 1);
+
+            // for testing purposes
+            //System.out.println(tempLen);
+            //System.out.println(tempNo);
+            //System.out.println(tempSubStr);
+
+            if (tempSubStr.equals("f")) {
+                horizontal += tempNo;
+                depth = aim * tempNo;
+            }
+            else if (tempSubStr.equals("d")) {
+                aim += tempNo;
+            }
+            else if (tempSubStr.equals("u")) {
+                aim -= tempNo;
+            };
+
+            // for testing purposes
+            //System.out.println(horizontal);
+            //System.out.println(depth);
+        }
+
+        System.out.println(depth * horizontal);
+        return depth * horizontal;
+        // return 0;
     }
 
     /** This method will write the values passed as challengeOne, challengeTwo, challengeThree, and challengeFour to a text file.
